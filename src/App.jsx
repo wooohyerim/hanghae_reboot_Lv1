@@ -55,11 +55,9 @@ function App() {
 
   // 완료 / 취소 버튼 클릭
   const doneHandler = (list) => {
-    if (list.isDone === true) {
+    if (list.isDone) {
       const returnList = {
-        id: list.id,
-        title: list.title,
-        body: list.body,
+        ...list,
         isDone: false,
       };
 
@@ -69,17 +67,18 @@ function App() {
       setDoneTodo(doneList);
     } else {
       const newDoneList = {
-        id: list.id,
-        title: list.title,
-        body: list.body,
+        ...list,
         isDone: true,
       };
 
-      setDoneTodo([...doneTodo, newDoneList]);
       const newTodoList = todo.filter((item) => item.id !== list.id);
+      setDoneTodo([...doneTodo, newDoneList]);
       setTodo(newTodoList);
     }
   };
+
+  console.log(todo);
+  console.log("done", doneTodo);
 
   return (
     <div className="App">
@@ -113,16 +112,17 @@ function App() {
         <h1>Done..! 👍</h1>
 
         <div className="list_inner_box">
-          {doneTodo.map((list) => {
-            return (
-              <TodoList
-                key={list.id}
-                list={list}
-                deleteHandler={deleteHandler}
-                doneHandler={doneHandler}
-              />
-            );
-          })}
+          {doneTodo[0]?.isDone === true &&
+            doneTodo.map((list) => {
+              return (
+                <TodoList
+                  key={list.id}
+                  list={list}
+                  deleteHandler={deleteHandler}
+                  doneHandler={doneHandler}
+                />
+              );
+            })}
         </div>
       </section>
     </div>
