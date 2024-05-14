@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import TodoList from "./components/TodoList";
 import "./App.css";
 
 function App() {
@@ -17,8 +17,7 @@ function App() {
       isDone: false,
     },
   ]);
-
-  console.log(todo);
+  const [doneTodo, setDoneTodo] = useState([]);
 
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
@@ -38,15 +37,48 @@ function App() {
       id: todo.length + 1,
       title,
       body,
+      isDone: false,
     };
     setTodo([...todo, newTodo]);
     setTitle("");
     setBody("");
   };
 
+  // 삭제 버튼 클릭
   const deleteHandler = (id) => {
     const newTodoList = todo.filter((item) => item.id !== id);
     setTodo(newTodoList);
+
+    const doneList = doneTodo.filter((item) => item.id !== id);
+    setDoneTodo(doneList);
+  };
+
+  // 완료 / 취소 버튼 클릭
+  const doneHandler = (list) => {
+    if (list.isDone === true) {
+      const returnList = {
+        id: list.id,
+        title: list.title,
+        body: list.body,
+        isDone: false,
+      };
+
+      const doneList = doneTodo.filter((item) => item.id !== list.id);
+
+      setTodo([...todo, returnList].sort((a, b) => a.id - b.id));
+      setDoneTodo(doneList);
+    } else {
+      const newDoneList = {
+        id: list.id,
+        title: list.title,
+        body: list.body,
+        isDone: true,
+      };
+
+      setDoneTodo([...doneTodo, newDoneList]);
+      const newTodoList = todo.filter((item) => item.id !== list.id);
+      setTodo(newTodoList);
+    }
   };
 
   return (
@@ -69,25 +101,28 @@ function App() {
         <div className="list_inner_box">
           {todo.map((list) => {
             return (
-              <div key={list.id} className="list_box">
-                <h1> {list.title}</h1>
-                <span> {list.body}</span>
-                <div className="btn_wrap_box">
-                  <button
-                    onClick={() => deleteHandler(list.id)}
-                    className="remove btn"
-                  >
-                    삭제하기
-                  </button>
-                  <button className="done btn">완료</button>
-                </div>
-              </div>
+              <TodoList
+                key={list.id}
+                list={list}
+                deleteHandler={deleteHandler}
+                doneHandler={doneHandler}
+              />
             );
           })}
         </div>
         <h1>Done..! 👍</h1>
+
         <div className="list_inner_box">
-          <div></div>
+          {doneTodo.map((list) => {
+            return (
+              <TodoList
+                key={list.id}
+                list={list}
+                deleteHandler={deleteHandler}
+                doneHandler={doneHandler}
+              />
+            );
+          })}
         </div>
       </section>
     </div>
