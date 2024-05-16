@@ -1,6 +1,6 @@
 import React from "react";
 
-const TodoList = ({ list, deleteHandler, doneHandler }) => {
+const TodoList = ({ list, deleteHandler, cancelClickHandler }) => {
   return (
     <div className="list_box">
       <h1> {list.title}</h1>
@@ -14,8 +14,11 @@ const TodoList = ({ list, deleteHandler, doneHandler }) => {
         >
           삭제하기
         </button>
-        <button onClick={() => doneHandler(list)} className="done btn">
-          {list.isDone === true ? "취소" : "완료"}
+        <button
+          onClick={() => cancelClickHandler(list.id)}
+          className="done btn"
+        >
+          {list.isDone ? "취소" : "완료"}
         </button>
       </div>
     </div>

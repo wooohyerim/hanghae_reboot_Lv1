@@ -1,20 +1,20 @@
 import React, { useState } from "react";
-import TodoList from "./components/TodoList";
+import TodoContainer from "./components/TodoContainer";
 import "./App.css";
 
 function App() {
   const [todo, setTodo] = useState([
     {
       id: 0,
-      title: "test",
-      body: "test test",
+      title: "Working test",
+      body: "test",
       isDone: false,
     },
     {
       id: 1,
-      title: "이력서 수정",
-      body: "이력서 수정해서 지원하기",
-      isDone: false,
+      title: "Done test",
+      body: "done",
+      isDone: true,
     },
   ]);
   const [doneTodo, setDoneTodo] = useState([]);
@@ -48,37 +48,17 @@ function App() {
   const deleteHandler = (id) => {
     const newTodoList = todo.filter((item) => item.id !== id);
     setTodo(newTodoList);
-
-    const doneList = doneTodo.filter((item) => item.id !== id);
-    setDoneTodo(doneList);
   };
 
   // 완료 / 취소 버튼 클릭
-  const doneHandler = (list) => {
-    if (list.isDone) {
-      const returnList = {
-        ...list,
-        isDone: false,
-      };
-
-      const doneList = doneTodo.filter((item) => item.id !== list.id);
-
-      setTodo([...todo, returnList].sort((a, b) => a.id - b.id));
-      setDoneTodo(doneList);
-    } else {
-      const newDoneList = {
-        ...list,
-        isDone: true,
-      };
-
-      const newTodoList = todo.filter((item) => item.id !== list.id);
-      setDoneTodo([...doneTodo, newDoneList]);
-      setTodo(newTodoList);
-    }
+  const cancelClickHandler = (id) => {
+    const newTodoList = todo.map((item) =>
+      item.id === id ? { ...item, isDone: !item.isDone } : item
+    );
+    setTodo(newTodoList);
   };
 
-  console.log(todo);
-  console.log("done", doneTodo);
+  // console.log("todo",todo);
 
   return (
     <div className="App">
@@ -96,34 +76,11 @@ function App() {
         <button className="add_btn">Add</button>
       </form>
       <section className="list_wrap_box">
-        <h1>Working.. 🔥</h1>
-        <div className="list_inner_box">
-          {todo.map((list) => {
-            return (
-              <TodoList
-                key={list.id}
-                list={list}
-                deleteHandler={deleteHandler}
-                doneHandler={doneHandler}
-              />
-            );
-          })}
-        </div>
-        <h1>Done..! 👍</h1>
-
-        <div className="list_inner_box">
-          {doneTodo[0]?.isDone === true &&
-            doneTodo.map((list) => {
-              return (
-                <TodoList
-                  key={list.id}
-                  list={list}
-                  deleteHandler={deleteHandler}
-                  doneHandler={doneHandler}
-                />
-              );
-            })}
-        </div>
+        <TodoContainer
+          todo={todo}
+          deleteHandler={deleteHandler}
+          cancelClickHandler={cancelClickHandler}
+        />
       </section>
     </div>
   );
