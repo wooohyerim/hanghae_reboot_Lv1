@@ -17,7 +17,6 @@ function App() {
       isDone: true,
     },
   ]);
-  const [doneTodo, setDoneTodo] = useState([]);
 
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
