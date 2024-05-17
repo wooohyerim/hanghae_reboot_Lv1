@@ -3,7 +3,7 @@ import TodoList from "./TodoList";
 
 const WorkingTodo = ({ todo, deleteHandler, cancelClickHandler }) => {
   return (
-    <>
+    <section className="list_wrap_box">
       <h1>Working.. 🔥</h1>
       <div className="list_inner_box">
         {todo.map((list) => {
@@ -30,7 +30,7 @@ const WorkingTodo = ({ todo, deleteHandler, cancelClickHandler }) => {
           ) : null;
         })}
       </div>
-    </>
+    </section>
   );
 };
 

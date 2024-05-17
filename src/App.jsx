@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import TodoContainer from "./components/TodoContainer";
+import TodoForm from "./components/TodoForm";
 import "./App.css";
 
 function App() {
@@ -65,22 +66,19 @@ function App() {
         <span>My Todo List</span>
         <span>React</span>
       </section>
-      <form className="Form" onSubmit={onSubmitHandler}>
-        <div className="input_container">
-          <label>Title</label>
-          <input type="text" value={title} onChange={titleChangeHandler} />
-          <label>Content</label>
-          <input type="text" value={body} onChange={bodyChangeHandler} />
-        </div>
-        <button className="add_btn">Add</button>
-      </form>
-      <section className="list_wrap_box">
-        <TodoContainer
-          todo={todo}
-          deleteHandler={deleteHandler}
-          cancelClickHandler={cancelClickHandler}
-        />
-      </section>
+      <TodoForm
+        title={title}
+        body={body}
+        onSubmitHandler={onSubmitHandler}
+        titleChangeHandler={titleChangeHandler}
+        bodyChangeHandler={bodyChangeHandler}
+      />
+
+      <TodoContainer
+        todo={todo}
+        deleteHandler={deleteHandler}
+        cancelClickHandler={cancelClickHandler}
+      />
     </div>
   );
 }
